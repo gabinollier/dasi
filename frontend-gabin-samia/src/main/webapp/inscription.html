@@ -4,42 +4,65 @@
         <title>Créer mon compte</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="styles.css">
     </head>
     <body>
-        <h1>Créer mon compte</h1>
-        
-        <label>Prenom</label><br/>
-        <input id="input-prenom" placeholder="Lucas"/><br/>
-        
-        <label>Nom</label><br/>
-        <input id="input-nom" placeholder="Martin"/><br/>
-        
-        <label>Date de Naissance</label><br/>
-        <input type= "date" id="input-datedenaissance"/><br/>
-        
-        <label>Niveau Scolaire</label><br/>
-        <select id = "select-niveau">
-            <option value ="">Choisir...</option>
-            <option value ="6">6ème</option>
-            <option value ="5">5ème</option>
-            <option value ="4">4ème</option>
-            <option value ="3">3ème</option>
-        </select><br/>
-        
-        <label>Code UAI de l'établissement</label><br/>
-        <input id="input-uai" placeholder="0750001A"/><br/>
-        
-        <label>Adresse mail</label><br/>
-        <input id="input-email" placeholder="lucas.martin@exemple.fr"/><br/>
-        
-        <label>Mot de passe</label><br/>
-        <input type="password" id="input-motdepasse" placeholder="8 caractères minimum"/>
-        
-        <br/>
-        
-        <button id="button-creermoncompte">Créer mon compte</button>        
-        <br/>
-        <a href="./connexion.html">Se connecter</a>
+        <div class="container">
+            <div class="form-header">
+                <h1>Créer mon compte</h1>
+                <p>Rejoins le réseau d'aide aux devoirs</p>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Prenom</label>
+                    <input id="input-prenom" placeholder="Lucas"/>
+                </div>
+                <div class="form-group">
+                    <label>Nom</label>
+                    <input id="input-nom" placeholder="Martin"/>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Date de Naissance</label>
+                    <input type="date" id="input-datedenaissance"/>
+                </div>
+                <div class="form-group">
+                    <label>Niveau Scolaire</label>
+                    <select id="select-niveau">
+                        <option value="">Choisir...</option>
+                        <option value="6">6ème</option>
+                        <option value="5">5ème</option>
+                        <option value="4">4ème</option>
+                        <option value="3">3ème</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Code UAI de l'établissement</label>
+                <input id="input-uai" placeholder="0750001A"/>
+                <div class="form-hint">Disponible auprès de votre établissement</div>
+            </div>
+
+            <div class="form-group">
+                <label>Adresse mail</label>
+                <input id="input-email" placeholder="lucas.martin@exemple.fr"/>
+            </div>
+
+            <div class="form-group">
+                <label>Mot de passe</label>
+                <input type="password" id="input-motdepasse" placeholder="8 caractères minimum"/>
+            </div>
+
+            <button id="button-creermoncompte">Créer mon compte</button>
+
+            <div class="form-footer">
+                Déjà inscrit ? <a href="./connexion.html">Se connecter</a>
+            </div>
+        </div>
 
         <script>
             function initPage() {

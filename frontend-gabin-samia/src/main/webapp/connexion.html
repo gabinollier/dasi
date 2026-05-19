@@ -4,21 +4,31 @@
         <title>Se connecter</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="styles.css">
     </head>
     <body>
-        <h1>Se connecter</h1>
-        
-        <label>Identifiant</label><br/>
-        <input id="input-identifiant" placeholder="votre.email@exemple.fr"/><br/>
-        
-        <label>Mot de passe</label><br/>
-        <input type="password" id="input-motdepasse" placeholder="*******"/>
-        
-        <br/>
-        
-        <button id="button-seconnecter">Se connecter</button>        
-        <br/>
-        <a href="./inscription.html">Créer un compte élève</a>
+        <div class="container">
+            <div class="form-header">
+                <h1>Se connecter</h1>
+                <p>Élèves et intervenants, c'est par ici !</p>
+            </div>
+
+            <div class="form-group">
+                <label>Identifiant</label>
+                <input id="input-identifiant" placeholder="votre.email@exemple.fr"/>
+            </div>
+            
+            <div class="form-group">
+                <label>Mot de passe</label>
+                <input type="password" id="input-motdepasse" placeholder="*******"/>
+            </div>
+
+            <button id="button-seconnecter">Se connecter</button>
+
+            <div class="form-footer">
+                Pas encore inscrit ? <a href="./inscription.html">Créer un compte élève</a>
+            </div>
+        </div>
 
         <script>
             function initPage() {

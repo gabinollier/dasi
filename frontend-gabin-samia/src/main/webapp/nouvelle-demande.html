@@ -1,34 +1,224 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Demandes</title>
+        <title>Nouvelle demande</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="styles.css">
+        <script src="https://unpkg.com/lucide@latest"></script>
     </head>
-    <body>
-        <h1>Demandes</h1>
-        <a href="./">Accueil</a>
-        
-        <h2>Liste des matieres</h2>
-        <div id="liste-matieres">
+    <body class="sidebar-body">
+        <div class="sidebar-layout">
+            <aside class="sidebar">
+                <div class="sidebar-logo">
+                    <span class="sidebar-logo-icon"><i data-lucide="book-open"></i></span>
+                    <div>
+                        <span class="sidebar-logo-text">INSTRUCT'IF</span>
+                        <span class="sidebar-logo-subtitle">Espace élève</span>
+                    </div>
+                </div>
+
+                <ul class="sidebar-menu">
+                    <li class="sidebar-menu-item">
+                        <a href="#" class="sidebar-menu-link active">
+                            <span class="sidebar-menu-icon"><i data-lucide="plus"></i></span>
+                            Nouvelle demande
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="./mes-demandes.html" class="sidebar-menu-link">
+                            <span class="sidebar-menu-icon"><i data-lucide="list"></i></span>
+                            Mes demandes
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="sidebar-footer">
+                    <div class="sidebar-user">
+                        <div class="sidebar-user-name">
+                            <span class="sidebar-user-icon"><i data-lucide="user"></i></span>
+                            Lucas Martin
+                        </div>
+                        <div class="sidebar-user-grade">4ème</div>
+                    </div>
+                    <a href="#" class="sidebar-logout">
+                        <span><i data-lucide="log-out"></i></span>
+                        Se déconnecter
+                    </a>
+                </div>
+            </aside>
+
+            <main class="main-content">
+                <h1>Choisir une matière</h1>
+                <p style="color: #999; margin-bottom: 30px;">Sélectionne la matière et le thème sur lesquels tu as besoin d'aide.</p>
+
+                <!-- Form Section -->
+                <div id="form-section">
+                    <form id="form-demande">
+                        <h2 style="font-size: 18px; margin-bottom: 20px;">Matières disponibles</h2>
+                        <div class="material-grid" id="liste-matieres">
+                        </div>
+
+                        <h2 style="font-size: 14px; margin-bottom: 15px;"><span class="theme-section-label" id="theme-section-label">Thèmes</span></h2>
+                        <div class="theme-list" id="liste-themes">
+                        </div>
+
+                        <label style="font-weight: 600; margin-bottom: 10px; display: block;"><i data-lucide="type"></i> Ta question ou difficulté</label>
+                        <textarea id="textarea-description" placeholder="Décris la difficulté ou ta question... Par exemple : je ne comprends pas comment résoudre les équations du second degré quand le discriminant est négatif."></textarea>
+                        <div class="textarea-counter"><span id="char-count">0</span> / 500</div>
+
+                        <div class="button-group">
+                            <button type="button" class="secondary">Annuler</button>
+                            <button type="button" id="submit-button" class="primary">Envoyer ma demande</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Result Section -->
+                <div id="result-section" style="display: none;">
+                    <div style="margin-bottom: 30px;">
+                        <div class="tab-pills">
+                            <div class="tab-pill" id="tab-state-a">État A — Intervenant trouvé</div>
+                            <div class="tab-pill" id="tab-state-b">État B — Aucun disponible</div>
+                        </div>
+                    </div>
+
+                    <!-- Success State -->
+                    <div id="success-state" class="status-message">
+                        <div class="status-icon success">
+                            <i data-lucide="check-circle"></i>
+                        </div>
+                        <h2 class="status-title">Intervenant trouvé !</h2>
+                        <p class="status-description">Tu vas être mis e en relation avec :</p>
+
+                        <div class="intervenant-card">
+                            <div class="intervenant-header">
+                                <div class="intervenant-avatar">
+                                    <i data-lucide="user"></i>
+                                </div>
+                                <div class="intervenant-info">
+                                    <h3 id="intervenant-name">Sophie</h3>
+                                    <p id="intervenant-type">Etudiante en L3 Mathématiques</p>
+                                </div>
+                            </div>
+
+                            <div class="intervenant-details">
+                                <div>
+                                    <div class="detail-group">
+                                        <div class="detail-label">Matière</div>
+                                        <div class="detail-value" id="detail-matiere">Français</div>
+                                    </div>
+                                    <div class="detail-group">
+                                        <div class="detail-label">Début de séance</div>
+                                        <div class="detail-value" id="detail-debut">Aujourd'hui à 14h30</div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="detail-group">
+                                        <div class="detail-label">Thème</div>
+                                        <div class="detail-value" id="detail-theme">Compréhension de texte</div>
+                                    </div>
+                                    <div class="detail-group">
+                                        <div class="detail-label">Durée estimée</div>
+                                        <div class="detail-value" id="detail-duree">45 min</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="button" class="primary btn-success" id="btn-visio">
+                            <i data-lucide="video"></i> Rejoindre la visioconférence
+                        </button>
+                    </div>
+
+                    <!-- No Match State -->
+                    <div id="no-match-state" class="status-message">
+                        <div class="status-icon warning">
+                            <i data-lucide="clock"></i>
+                        </div>
+                        <h2 class="status-title">Aucun intervenant disponible</h2>
+                        <p class="status-description">
+                            Tous nos intervenants sont occupés pour le moment. Pas d'inquiétude — ta demande a bien été enregistrée et sera traitée dès qu'un intervenant sera libre.<br>
+                            Tu recevras une notification par email.
+                        </p>
+
+                        <div class="button-group" style="justify-content: center; gap: 15px;">
+                            <button type="button" class="secondary">Voir mon historique</button>
+                            <button type="button" class="primary">Faire une nouvelle demande</button>
+                        </div>
+                    </div>
+                </div>
+            </main>
         </div>
-        
-        <h2>Liste des thèmes</h2>
-        <div id="liste-themes">
-        </div>
-        
-        <textarea id="textarea-description"></textarea>
-        
-        <button id="submit-button">Envoyer ma demande</button>
-        
+
         <script>
-            
             let matieres;
             
             function initPage() {
                 listerMatieres();
                 document.getElementById("submit-button").addEventListener("click", envoyerDemande);
+                document.getElementById("textarea-description").addEventListener("input", updateCharCount);
+                lucide.createIcons();
             };
+            
+            function updateCharCount() {
+                const textarea = document.getElementById("textarea-description");
+                document.getElementById("char-count").textContent = textarea.value.length;
+            }
+            
+            function showFormSection() {
+                document.getElementById("form-section").style.display = "block";
+                document.getElementById("result-section").style.display = "none";
+            }
+            
+            function showResultSection(data) {
+                document.getElementById("form-section").style.display = "none";
+                document.getElementById("result-section").style.display = "block";
+                
+                if (data && data.exists) {
+                    showSuccessState(data);
+                } else {
+                    showNoMatchState();
+                }
+            }
+            
+            function showSuccessState(data) {
+                document.getElementById("success-state").classList.add("show");
+                document.getElementById("no-match-state").classList.remove("show");
+                document.getElementById("tab-state-a").classList.add("active");
+                document.getElementById("tab-state-b").classList.remove("warning");
+                
+                document.getElementById("intervenant-name").textContent = data.prenomIntervenant + " " + data.nomIntervenant;
+                
+                let typeText = data.typeIntervenant;
+                if (data.typeIntervenant === "Professeur") {
+                    typeText += " - " + data.typeEtablissement;
+                } else if (data.typeIntervenant === "Etudiant") {
+                    typeText += " en " + data.specialite + " " + data.universite;
+                } else if (data.typeIntervenant === "Autre") {
+                    typeText = data.activite;
+                }
+                document.getElementById("intervenant-type").textContent = typeText;
+                
+                document.getElementById("detail-matiere").textContent = data.matiere;
+                document.getElementById("detail-theme").textContent = data.theme;
+                document.getElementById("detail-debut").textContent = "Aujourd'hui à " + data.debut;
+                document.getElementById("detail-duree").textContent = "45 min";
+                
+                document.getElementById("btn-visio").onclick = function() {
+                    window.open(data.lienVisio, "_blank");
+                };
+                
+                lucide.createIcons();
+            }
+            
+            function showNoMatchState() {
+                document.getElementById("success-state").classList.remove("show");
+                document.getElementById("no-match-state").classList.add("show");
+                document.getElementById("tab-state-a").classList.remove("active");
+                document.getElementById("tab-state-b").classList.add("warning");
+                lucide.createIcons();
+            }
             
             async function envoyerDemande()
             {
@@ -72,6 +262,7 @@
                 if (jsonResponse)
                 {
                     console.log(jsonResponse);
+                    showResultSection(jsonResponse);
                 }
                 
             }
@@ -83,26 +274,32 @@
                 listeThemes = document.getElementById("liste-themes");
                 listeThemes.innerHTML = "";
                 
-                for(const i in matiere["themes"])
-                    {
+                if (matiere["themes"] && matiere["themes"].length > 0) {
+                    for(const i in matiere["themes"]) {
                         const theme = matiere["themes"][i]["nom"];
                         
+                        const themeItem = document.createElement("label");
+                        themeItem.className = "theme-item";
+                        
                         const input = document.createElement("input");
-                        
-                        
                         input.type = "radio";
                         input.name = "themes";
                         input.value = theme;
                         input.id = theme;
-                        listeThemes.appendChild(input);
                         
-                        const label = document.createElement("label");
-                        label.for = theme;
-                        label.innerText = theme;
-                        listeThemes.appendChild(label);
-
-
+                        themeItem.appendChild(input);
+                        themeItem.appendChild(document.createTextNode(theme));
+                        
+                        listeThemes.appendChild(themeItem);
+                        
+                        input.addEventListener("change", function() {
+                            document.querySelectorAll(".theme-item").forEach(item => item.classList.remove("active"));
+                            if (this.checked) {
+                                themeItem.classList.add("active");
+                            }
+                        });
                     }
+                }
             }
             
             async function listerMatieres() {
@@ -128,25 +325,48 @@
                     matieres = jsonResponse;
                     const listeMatiere = document.getElementById('liste-matieres');
                     listeMatiere.innerHTML = "";
-                    for(const i in jsonResponse)
-                    {
+                    
+                    const icons = ['book', 'calculator', 'zap', 'code', 'globe', 'dna'];
+                    
+                    for(const i in jsonResponse) {
                         const matiere = jsonResponse[i];
                         const nomMatiere = matiere["nom"];
+                        const iconName = icons[i % icons.length];
 
+                        const card = document.createElement("label");
+                        card.className = "material-card";
+                        card.style.cursor = "pointer";
+                        
                         const input = document.createElement("input");
                         input.type = "radio";
                         input.name = "matieres";
                         input.value = nomMatiere;
                         input.id = nomMatiere;
-                        input.addEventListener("change", () => listerThemes(i));
-                        listeMatiere.appendChild(input);
+                        input.style.display = "none";
+                        input.addEventListener("change", () => {
+                            document.querySelectorAll(".material-card").forEach(c => c.classList.remove("active"));
+                            if (input.checked) {
+                                card.classList.add("active");
+                            }
+                            listerThemes(i);
+                        });
                         
-                        const label = document.createElement("label");
-                        label.for = nomMatiere;
-                        label.innerText = nomMatiere;
-                        listeMatiere.appendChild(label);
-
-
+                        card.appendChild(input);
+                        
+                        const iconDiv = document.createElement("div");
+                        iconDiv.className = "material-card-icon";
+                        const iconEl = document.createElement("i");
+                        iconEl.setAttribute("data-lucide", iconName);
+                        iconDiv.appendChild(iconEl);
+                        card.appendChild(iconDiv);
+                        
+                        const nameSpan = document.createElement("div");
+                        nameSpan.className = "material-card-name";
+                        nameSpan.textContent = nomMatiere;
+                        card.appendChild(nameSpan);
+                        
+                        listeMatiere.appendChild(card);
+                        lucide.createIcons();
                     }
                 }
             }
@@ -154,3 +374,5 @@
         </script>
     </body>
 </html>
+        
+  
