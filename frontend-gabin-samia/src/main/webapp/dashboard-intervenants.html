@@ -4,25 +4,164 @@
         <title>Tableau de bord</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="styles.css">
+        <script src="https://unpkg.com/lucide@latest"></script>
     </head>
-    <body>
-        <div id="div-soutien">
-            <p>soutien</p>
-            
-            <textarea id="textarea-bilan"></textarea>
-            
-            <button id="button-finir"></button>
+    <body class="sidebar-body">
+        <div class="sidebar-layout">
+            <aside class="sidebar intervenant">
+                <div class="sidebar-logo">
+                    <span class="sidebar-logo-icon"><i data-lucide="book-open"></i></span>
+                    <div>
+                        <span class="sidebar-logo-text">INSTRUCT'IF</span>
+                        <span class="sidebar-logo-subtitle">Espace intervenant</span>
+                    </div>
+                </div>
+
+                <ul class="sidebar-menu">
+                    <li class="sidebar-menu-item">
+                        <a href="#" class="sidebar-menu-link active">
+                            <span class="sidebar-menu-icon"><i data-lucide="home"></i></span>
+                            Tableau de bord
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="#" class="sidebar-menu-link">
+                            <span class="sidebar-menu-icon"><i data-lucide="history"></i></span>
+                            Mon historique
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="sidebar-footer">
+                    <div class="sidebar-user">
+                        <div class="sidebar-user-name">
+                            <span class="sidebar-user-icon"><i data-lucide="user"></i></span>
+                            Sophie Durand
+                        </div>
+                        <div class="sidebar-user-grade">Intervenante</div>
+                    </div>
+                    <a href="#" class="sidebar-logout">
+                        <span><i data-lucide="log-out"></i></span>
+                        Se déconnecter
+                    </a>
+                </div>
+            </aside>
+
+            <main class="main-content">
+                <!-- Soutien En Cours -->
+                <div id="soutien-section" style="display: none;">
+                    <div class="status-message show">
+                        <div class="status-icon in-progress">
+                            <i data-lucide="check-circle"></i>
+                        </div>
+                        <h2 class="status-title">Soutien en cours</h2>
+
+                        <div class="intervenant-card">
+                            <div class="intervenant-header">
+                                <div class="intervenant-avatar">
+                                    <i data-lucide="user"></i>
+                                </div>
+                                <div class="intervenant-info">
+                                    <h3 id="eleve-name">Lucas Martin</h3>
+                                    <p id="eleve-grade">4ème</p>
+                                </div>
+                            </div>
+
+                            <div class="intervenant-details">
+                                <div>
+                                    <div class="detail-group">
+                                        <div class="detail-label">Matière</div>
+                                        <div class="detail-value" id="detail-matiere">Français</div>
+                                    </div>
+                                    <div class="detail-group">
+                                        <div class="detail-label">Heure de début</div>
+                                        <div class="detail-value" id="detail-debut">14h30</div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="detail-group">
+                                        <div class="detail-label">Thème</div>
+                                        <div class="detail-value" id="detail-theme">Compréhension de texte</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="detail-group demande">
+                                <div class="detail-label">Demande de l'élève</div>
+                                <div class="detail-value" id="detail-demande">Je ne comprends pas comment résoudre les équations du second degré quand le discriminant est négatif.</div>
+                            </div>
+                        </div>
+
+                        <label style="font-weight: 600; margin-bottom: 10px; display: block;"><i data-lucide="file-text"></i> Bilan de la séance</label>
+                        <textarea id="textarea-bilan" class="bilan" placeholder="Décris le bilan de cette séance..."></textarea>
+
+                        <div class="button-group" style="justify-content: space-between;">
+                            <button type="button" class="primary btn-success">
+                                <i data-lucide="video"></i> Rejoindre la visio
+                            </button>
+                            <button type="button" id="button-finir" class="secondary">Terminer la séance</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pas De Soutien -->
+                <div id="disponible-section" style="display: none;">
+                    <div class="status-message show">
+                        <div class="status-icon success">
+                            <i data-lucide="check-circle"></i>
+                        </div>
+                        <h2 class="status-title">Vous êtes disponible</h2>
+                        <p class="status-description">Vous serez notifié dès qu'un élève fait une demande dans vos matières. Merci pour votre engagement !</p>
+
+                        <div style="background: white; border-radius: 12px; padding: 30px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; text-align: center;">
+                            <div>
+                                <div style="font-size: 32px; font-weight: 700; color: #5b5dff; margin-bottom: 5px;">24</div>
+                                <div style="font-size: 13px; color: #999;">soutiens réalisés</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 32px; font-weight: 700; color: #ff6b4a; margin-bottom: 5px;">18h</div>
+                                <div style="font-size: 13px; color: #999;">d'accompagnement</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 32px; font-weight: 700; color: #4caf50; margin-bottom: 5px;">4.8</div>
+                                <div style="font-size: 13px; color: #999;">note moyenne</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
         </div>
-        <div id="div-pas-de-soutien">
-            <p>pas de soutien</p>
-        </div>
-        
+
         <script>
             function initPage() {
                 afficherSoutienEnCours();
-                
                 document.getElementById("button-finir").addEventListener("click", finirSoutien);
+                lucide.createIcons();
             };
+            
+            function showSoutienSection(data) {
+                document.getElementById("soutien-section").style.display = "block";
+                document.getElementById("disponible-section").style.display = "none";
+                
+                document.getElementById("eleve-name").textContent = data.prenomEleve + " " + data.nomEleve;
+                document.getElementById("detail-matiere").textContent = data.matiere;
+                document.getElementById("detail-theme").textContent = data.theme;
+                document.getElementById("detail-debut").textContent = data.debut;
+                document.getElementById("detail-demande").textContent = data.description;
+                
+                document.querySelector(".btn-success").onclick = function() {
+                    window.open(data.lienVisio, "_blank");
+                };
+                
+                lucide.createIcons();
+            }
+            
+            function showDisponibleSection() {
+                document.getElementById("soutien-section").style.display = "none";
+                document.getElementById("disponible-section").style.display = "block";
+                lucide.createIcons();
+            }
             
             async function finirSoutien()
             {
@@ -49,6 +188,7 @@
                         );
                 if (jsonResponse) {
                     console.log(jsonResponse);
+                    afficherSoutienEnCours();
                 }
             }  
             
@@ -75,13 +215,11 @@
                     
                     if (jsonResponse["exists"])
                     {
-                        document.getElementById("div-pas-de-soutien").style = "visibility: hidden;";
-                        document.getElementById("div-soutien").style = "visibility: visible;";
+                        showSoutienSection(jsonResponse);
                     }
                     else 
                     {
-                        document.getElementById("div-pas-de-soutien").style = "visibility: visible;";
-                        document.getElementById("div-soutien").style = "visibility: hidden;";
+                        showDisponibleSection();
                     }
                 }
             }

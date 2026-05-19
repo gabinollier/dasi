@@ -266,6 +266,22 @@ body.sidebar-body {
     color: #666;
 }
 
+/* Intervenant Sidebar Variant */
+.sidebar.intervenant {
+    background: white;
+}
+
+.sidebar.intervenant .sidebar-menu-link.active {
+    background: #ffe8e8;
+    color: #ff6b4a;
+}
+
+.sidebar.intervenant .sidebar-logo-icon,
+.sidebar.intervenant .sidebar-menu-icon,
+.sidebar.intervenant .sidebar-user-icon {
+    color: #ff6b4a;
+}
+
 .main-content {
     margin-left: 255px;
     flex: 1;
@@ -554,6 +570,37 @@ button.btn-success:hover {
     color: #999;
     margin-bottom: 30px;
     font-size: 14px;
+}
+
+/* Soutien En Cours Variant */
+.status-icon.in-progress {
+    background: #e8f5e9;
+    color: #4caf50;
+}
+
+.detail-group.demande {
+    background: #f5f5f5;
+    padding: 15px;
+    border-radius: 8px;
+    grid-column: 1 / -1;
+}
+
+.detail-group.demande .detail-label {
+    text-transform: uppercase;
+    font-size: 12px;
+}
+
+.detail-group.demande .detail-value {
+    font-size: 14px;
+    font-weight: normal;
+    font-style: italic;
+    color: #666;
+    line-height: 1.6;
+}
+
+textarea.bilan {
+    min-height: 150px;
+    margin-bottom: 20px;
 }
 
 /* Lucide Icons */
