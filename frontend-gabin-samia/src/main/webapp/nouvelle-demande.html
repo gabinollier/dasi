@@ -50,10 +50,10 @@
 
             <main class="main-content">
                 <h1>Choisir une matière</h1>
-                <p style="color: #999; margin-bottom: 30px;">Sélectionne la matière et le thème sur lesquels tu as besoin d'aide.</p>
 
                 <!-- Form Section -->
                 <div id="form-section">
+                    <p class="form-description">Sélectionne la matière et le thème sur lesquels tu as besoin d'aide.</p>
                     <form id="form-demande">
                         <h2 style="font-size: 18px; margin-bottom: 20px;">Matières disponibles</h2>
                         <div class="material-grid" id="liste-matieres">
@@ -76,13 +76,6 @@
 
                 <!-- Result Section -->
                 <div id="result-section" style="display: none;">
-                    <div style="margin-bottom: 30px;">
-                        <div class="tab-pills">
-                            <div class="tab-pill" id="tab-state-a">État A — Intervenant trouvé</div>
-                            <div class="tab-pill" id="tab-state-b">État B — Aucun disponible</div>
-                        </div>
-                    </div>
-
                     <!-- Success State -->
                     <div id="success-state" class="status-message">
                         <div class="status-icon success">
@@ -118,10 +111,7 @@
                                         <div class="detail-label">Thème</div>
                                         <div class="detail-value" id="detail-theme">Compréhension de texte</div>
                                     </div>
-                                    <div class="detail-group">
-                                        <div class="detail-label">Durée estimée</div>
-                                        <div class="detail-value" id="detail-duree">45 min</div>
-                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -143,8 +133,8 @@
                         </p>
 
                         <div class="button-group" style="justify-content: center; gap: 15px;">
-                            <button type="button" class="secondary">Voir mon historique</button>
-                            <button type="button" class="primary">Faire une nouvelle demande</button>
+                            <button type="button" class="secondary" onclick="window.location.href='./mes-demandes.html'">Voir mon historique</button>
+                            <button type="button" class="primary" onclick="window.location.href='./nouvelle-demande.html'">Faire une nouvelle demande</button>
                         </div>
                     </div>
                 </div>
@@ -185,8 +175,6 @@
             function showSuccessState(data) {
                 document.getElementById("success-state").classList.add("show");
                 document.getElementById("no-match-state").classList.remove("show");
-                document.getElementById("tab-state-a").classList.add("active");
-                document.getElementById("tab-state-b").classList.remove("warning");
                 
                 document.getElementById("intervenant-name").textContent = data.prenomIntervenant + " " + data.nomIntervenant;
                 
@@ -203,7 +191,7 @@
                 document.getElementById("detail-matiere").textContent = data.matiere;
                 document.getElementById("detail-theme").textContent = data.theme;
                 document.getElementById("detail-debut").textContent = "Aujourd'hui à " + data.debut;
-                document.getElementById("detail-duree").textContent = "45 min";
+
                 
                 document.getElementById("btn-visio").onclick = function() {
                     window.open(data.lienVisio, "_blank");
@@ -215,8 +203,6 @@
             function showNoMatchState() {
                 document.getElementById("success-state").classList.remove("show");
                 document.getElementById("no-match-state").classList.add("show");
-                document.getElementById("tab-state-a").classList.remove("active");
-                document.getElementById("tab-state-b").classList.add("warning");
                 lucide.createIcons();
             }
             
@@ -292,11 +278,10 @@
                         
                         listeThemes.appendChild(themeItem);
                         
-                        input.addEventListener("change", function() {
+                        themeItem.addEventListener("click", function() {
                             document.querySelectorAll(".theme-item").forEach(item => item.classList.remove("active"));
-                            if (this.checked) {
-                                themeItem.classList.add("active");
-                            }
+                            input.checked = true;
+                            themeItem.classList.add("active");
                         });
                     }
                 }
@@ -343,11 +328,10 @@
                         input.value = nomMatiere;
                         input.id = nomMatiere;
                         input.style.display = "none";
-                        input.addEventListener("change", () => {
+                        card.addEventListener("click", () => {
                             document.querySelectorAll(".material-card").forEach(c => c.classList.remove("active"));
-                            if (input.checked) {
-                                card.classList.add("active");
-                            }
+                            input.checked = true;
+                            card.classList.add("active");
                             listerThemes(i);
                         });
                         
