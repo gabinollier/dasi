@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon historique - INSTRUCT'IF</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body style="background: #f5f5f5; padding: 0; display: block; min-height: 100vh;">
+    <div class="sidebar-layout">
+        <!-- SIDEBAR -->
+        <aside class="sidebar intervenant">
+            <div class="sidebar-logo">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+                    <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #ff6b4a, #ff8a6b); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 18px;">
+                        IF
+                    </div>
+                    <div>
+                        <div style="font-weight: 600; color: #333;">INSTRUCT'IF</div>
+                        <div style="font-size: 12px; color: #999;">Espace intervenant</div>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="sidebar-menu">
+                <a href="dashboard-intervenants.html" class="sidebar-menu-link">
+                    <span>Tableau de bord</span>
+                </a>
+                <a href="intervenant-historique.html" class="sidebar-menu-link active">
+                    <span>Mon historique</span>
+                </a>
+            </nav>
+
+            <div style="position: absolute; bottom: 20px; left: 20px; right: 20px; border-top: 1px solid #e0e0e0; padding-top: 20px;">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                    <div style="width: 40px; height: 40px; background: #5b5dff; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
+                        A
+                    </div>
+                    <div style="flex: 1;">
+                        <div id="user-name" style="font-weight: 500; font-size: 14px; color: #333;"></div>
+                        <div style="font-size: 12px; color: #999;">Intervenant</div>
+                    </div>
+                </div>
+                <a href="#" style="display: flex; align-items: center; gap: 8px; color: #ff6b4a; text-decoration: none; font-size: 13px;">
+                    <i data-lucide="log-out" style="width: 16px; height: 16px;"></i>
+                    Se déconnecter
+                </a>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content" style="background: white; margin-left: 255px; padding: 40px;">
+            <div class="page-header">
+                <h1>Mon historique</h1>
+                <p id="soutiens-count" style="color: #999; font-size: 14px;">0 soutiens terminés</p>
+            </div>
+
+            <div class="section-title">Mes derniers soutiens</div>
+
+            <table class="history-table">
+                <thead>
+                    <tr>
+                        <th>DATE</th>
+                        <th>ÉLÈVE</th>
+                        <th>MATIÈRE</th>
+                        <th>DURÉE</th>
+                        <th>STATUT</th>
+                        <th style="width: 40px;"></th>
+                    </tr>
+                </thead>
+                <tbody id="soutiens-table-body">
+                </tbody>
+            </table>
+        </main>
+    </div>
+
+    <script>
+        // Function to calculate duration between two times
+        function calculateDuration(heureDebut, heureFin) {
+            if (!heureDebut || !heureFin) return '';
+            
+            const [hD, mD, sD] = heureDebut.split(':').map(Number);
+            const [hF, mF, sF] = heureFin.split(':').map(Number);
+            
+            const debutMs = hD * 3600000 + mD * 60000 + sD * 1000;
+            const finMs = hF * 3600000 + mF * 60000 + sF * 1000;
+            
+            const diffMs = finMs - debutMs;
+            const minutes = Math.round(diffMs / 60000);
+            
+            return minutes > 0 ? `${minutes} min` : '';
+        }
+
+        // Function to format date
+        function formatDate(dateIso) {
+            const date = new Date(dateIso);
+            const options = { day: 'numeric', month: 'short', year: 'numeric' };
+            return date.toLocaleDateString('fr-FR', options);
+        }
+
+        // Function to get status badge class
+        function getStatusClass(statut) {
+            const lower = statut.toLowerCase();
+            if (lower === 'finished') return 'finished';
+            if (lower === 'cancelled') return 'cancelled';
+            if (lower === 'started') return 'ongoing';
+            return 'finished';
+        }
+
+        // Function to format status text
+        function formatStatus(statut) {
+            const lower = statut.toLowerCase();
+            if (lower === 'finished') return 'Terminée';
+            if (lower === 'cancelled') return 'Annulée';
+            if (lower === 'started') return 'En cours';
+            return statut;
+        }
+
+        // Fetch and display soutiens
+        function chargerHistorique() {
+            fetch('ActionServlet?todo=get-soutiens-intervenant', {
+                method: 'GET'
+            })
+            .then(response => response.json())
+            .then(soutiens => {
+                document.getElementById('soutiens-count').textContent = `${soutiens.length} soutiens terminés`;
+                
+                const tbody = document.getElementById('soutiens-table-body');
+                tbody.innerHTML = '';
+                
+                soutiens.forEach((soutien, index) => {
+                    const duree = calculateDuration(soutien.heureDebut, soutien.heureFin);
+                    const date = formatDate(soutien.dateDebut);
+                    const statusClass = getStatusClass(soutien.statut);
+                    const statusText = formatStatus(soutien.statut);
+                    
+                    const eleveNom = `${soutien.prenomEleve} ${soutien.nomEleve}`;
+                    const eleveclasse = soutien.classeEleve;
+                    
+                    // Main row
+                    const tr = document.createElement('tr');
+                    tr.className = 'row-expandable';
+                    tr.innerHTML = `
+                        <td>${date}</td>
+                        <td>
+                            <div>${eleveNom}</div>
+                            <div style="font-size: 12px; color: #999;">${eleveclasse}ème</div>
+                        </td>
+                        <td>${soutien.matiere}</td>
+                        <td class="duration-column">${duree}</td>
+                        <td>
+                            <span class="status-badge ${statusClass}">${statusText}</span>
+                        </td>
+                        <td style="text-align: center;">
+                            <button class="row-toggle-btn" onclick="toggleBilan(event, ${index})">
+                                <i data-lucide="chevron-down" style="width: 18px; height: 18px;"></i>
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                    
+                    // Expanded row with bilan
+                    if (soutien.bilan) {
+                        const expandedTr = document.createElement('tr');
+                        expandedTr.className = `expanded-row expanded-row-${index}`;
+                        expandedTr.innerHTML = `
+                            <td colspan="6">
+                                <div class="expanded-content">
+                                    <div class="bilan-label">
+                                        <i data-lucide="file-text" style="width: 16px; height: 16px;"></i>
+                                        Bilan de séance
+                                    </div>
+                                    <div class="bilan-text">${soutien.bilan}</div>
+                                </div>
+                            </td>
+                        `;
+                        tbody.appendChild(expandedTr);
+                    }
+                });
+                
+                lucide.createIcons();
+            })
+            .catch(error => console.error('Erreur:', error));
+        }
+
+        // Toggle bilan visibility
+        function toggleBilan(event, index) {
+            event.stopPropagation();
+            const expandedRow = document.querySelector(`.expanded-row-${index}`);
+            if (expandedRow) {
+                const btn = event.currentTarget;
+                expandedRow.classList.toggle('active');
+                btn.classList.toggle('expanded');
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            chargerHistorique();
+        });
+    </script>
+</body>
+</html>

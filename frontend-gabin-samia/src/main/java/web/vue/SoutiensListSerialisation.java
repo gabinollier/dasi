@@ -40,6 +40,8 @@ public class SoutiensListSerialisation extends Serialisation {
                 
                 JsonObjectBuilder objetBuilder = Json.createObjectBuilder()
                         .add("dateDebut", dateDebutFormatee)
+                        .add("heureDebut", soutien.getHeureDebut().format(DateTimeFormatter.ISO_TIME))
+                        .add("heureFin", soutien.getHeureFin() != null ? soutien.getHeureFin().format(DateTimeFormatter.ISO_TIME) : "")
                         .add("matiere", soutien.getMatiere().getNom())
                         .add("theme", soutien.getTheme().getNom())
                         .add("prenomIntervenant", soutien.getIntervenant().getPrenom())
