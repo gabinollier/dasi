@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Tableau de bord</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div id="div-soutien">
+            <p>soutien</p>
+            
+            <textarea id="textarea-bilan"></textarea>
+            
+            <button id="button-finir"></button>
+        </div>
+        <div id="div-pas-de-soutien">
+            <p>pas de soutien</p>
+        </div>
+        
+        <script>
+            function initPage() {
+                afficherSoutienEnCours();
+                
+                document.getElementById("button-finir").addEventListener("click", finirSoutien);
+            };
+            
+            async function finirSoutien()
+            {
+                const bilan = document.getElementById("textarea-bilan").value;
+                
+                let params = {
+                    todo: "finir-soutien",
+                    bilan: bilan
+                };
+                
+                let url = './ActionServlet?' + new URLSearchParams(params);
+
+                let jsonResponse = await fetch(url, { method: "POST" })
+                        .then(
+                            function(httpResponse) {
+                                return httpResponse.json();
+                            }
+                        )
+                        .catch(
+                            function(error) {
+                                console.log(error);
+                                return null;
+                            }
+                        );
+                if (jsonResponse) {
+                    console.log(jsonResponse);
+                }
+            }  
+            
+            async function afficherSoutienEnCours() {
+                let params = {
+                    todo: "get-soutien-en-cours-intervenant"
+                };
+                let url = './ActionServlet?' + new URLSearchParams(params);
+
+                let jsonResponse = await fetch(url, { method: "GET" })
+                        .then(
+                            function(httpResponse) {
+                                return httpResponse.json();
+                            }
+                        )
+                        .catch(
+                            function(error) {
+                                console.log(error);
+                                return null;
+                            }
+                        );
+                if (jsonResponse) {
+                    console.log(jsonResponse);
+                    
+                    if (jsonResponse["exists"])
+                    {
+                        document.getElementById("div-pas-de-soutien").style = "visibility: hidden;";
+                        document.getElementById("div-soutien").style = "visibility: visible;";
+                    }
+                    else 
+                    {
+                        document.getElementById("div-pas-de-soutien").style = "visibility: visible;";
+                        document.getElementById("div-soutien").style = "visibility: hidden;";
+                    }
+                }
+            }
+            window.onload = initPage;
+        </script>
+    </body>
+</html>

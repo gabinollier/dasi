@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Créer mon compte</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <h1>Créer mon compte</h1>
+        
+        <label>Prenom</label><br/>
+        <input id="input-prenom" placeholder="Lucas"/><br/>
+        
+        <label>Nom</label><br/>
+        <input id="input-nom" placeholder="Martin"/><br/>
+        
+        <label>Date de Naissance</label><br/>
+        <input type= "date" id="input-datedenaissance"/><br/>
+        
+        <label>Niveau Scolaire</label><br/>
+        <select id = "select-niveau">
+            <option value ="">Choisir...</option>
+            <option value ="6">6ème</option>
+            <option value ="5">5ème</option>
+            <option value ="4">4ème</option>
+            <option value ="3">3ème</option>
+        </select><br/>
+        
+        <label>Code UAI de l'établissement</label><br/>
+        <input id="input-uai" placeholder="0750001A"/><br/>
+        
+        <label>Adresse mail</label><br/>
+        <input id="input-email" placeholder="lucas.martin@exemple.fr"/><br/>
+        
+        <label>Mot de passe</label><br/>
+        <input type="password" id="input-motdepasse" placeholder="8 caractères minimum"/>
+        
+        <br/>
+        
+        <button id="button-creermoncompte">Créer mon compte</button>        
+        <br/>
+        <a href="./connexion.html">Se connecter</a>
+
+        <script>
+            function initPage() {
+                document.getElementById("button-creermoncompte").addEventListener("click", onButtonClicked);
+            };
+            
+            async function onButtonClicked() {
+                
+                // INSCRIPTION
+                
+                let url = './ActionServlet?todo=inscrire-eleve'; 
+                
+                const prenom = document.getElementById("input-prenom").value;
+                const nom = document.getElementById("input-nom").value;
+                const datedenaissance = document.getElementById("input-datedenaissance").value;
+                const niveauscolaire = document.getElementById("select-niveau").value;
+                const uai = document.getElementById("input-uai").value;
+                const email = document.getElementById("input-email").value;
+                const motdepasse = document.getElementById("input-motdepasse").value;
+                
+               
+                const params = {
+                    prenom,
+                    nom,
+                    datedenaissance,
+                    niveauscolaire,
+                    uai,
+                    email,
+                    motdepasse
+                };
+                
+                let jsonResponse = await fetch(url, 
+                { 
+                    method: 'POST',
+                    body: new URLSearchParams(params)
+                })
+                        .then(
+                            function(httpResponse) {
+                                return httpResponse.json();
+                            }
+                        )
+                        .catch(
+                            function(error) {
+                                console.log(error);
+                                return null;
+                            }
+                        );
+                console.log("Réponse de l'inscription : " + jsonResponse);
+                if (jsonResponse && jsonResponse["success"]) {
+                    // CONNECTION/AUTHENTIFICATION
+                    
+                    let url = './ActionServlet?todo=authentifier'; 
+                    const params = {
+                        identifiant: email,
+                        motdepasse
+                    };
+                    let jsonResponse = await fetch(url, 
+                    { 
+                        method: 'POST',
+                        body: new URLSearchParams(params)
+                    })
+                    .then(
+                        function(httpResponse) {
+                            return httpResponse.json();
+                        }
+                    )
+                    .catch(
+                        function(error) {
+                            console.log(error);
+                            return null;
+                        }
+                    );
+                    console.log("Réponse de l'authentification : " + jsonResponse);
+                    
+                    if (jsonResponse && jsonResponse["type"] === "eleve")
+                    {
+                        // On a bien connecté l'élève qui vient de s'inscrire
+                        document.location.href = "./nouvelle-demande.html";
+                    }
+                    else 
+                    {
+                        alert("Il y a eu un problème");
+                    }
+                }
+                else 
+                {
+                    alert("Il y a eu un problème");
+                }
+            }
+            window.onload = initPage;
+        </script>
+    </body>
+</html>

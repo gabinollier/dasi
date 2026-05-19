@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Se connecter</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <h1>Se connecter</h1>
+        
+        <label>Identifiant</label><br/>
+        <input id="input-identifiant" placeholder="votre.email@exemple.fr"/><br/>
+        
+        <label>Mot de passe</label><br/>
+        <input type="password" id="input-motdepasse" placeholder="*******"/>
+        
+        <br/>
+        
+        <button id="button-seconnecter">Se connecter</button>        
+        <br/>
+        <a href="./inscription.html">Créer un compte élève</a>
+
+        <script>
+            function initPage() {
+                document.getElementById("button-seconnecter").addEventListener("click", onButtonClicked);
+            };
+            
+            async function onButtonClicked() {
+                let url = './ActionServlet?todo=authentifier'; 
+                
+                const identifiant = document.getElementById("input-identifiant").value;
+                const motdepasse = document.getElementById("input-motdepasse").value;
+                
+                const params = {
+                    identifiant,
+                    motdepasse
+                };
+                
+                let jsonResponse = await fetch(url, 
+                { 
+                    method: 'POST',
+                    body: new URLSearchParams(params)
+                })
+                        .then(
+                            function(httpResponse) {
+                                return httpResponse.json();
+                            }
+                        )
+                        .catch(
+                            function(error) {
+                                console.log(error);
+                                return null;
+                            }
+                        );
+                console.log(jsonResponse);
+                if (jsonResponse) {
+                    if (jsonResponse["type"] === "intervenant") {
+                        document.location.href = "./dashboard-intervenants.html";
+                    } else if (jsonResponse["type"] === "eleve")
+                    {
+                        document.location.href = "./nouvelle-demande.html";
+                    }
+                    else 
+                    {
+                        alert("Identifiant et/ou mot de passe incorrect.");
+                    }
+                }
+            }
+            window.onload = initPage;
+        </script>
+    </body>
+</html>

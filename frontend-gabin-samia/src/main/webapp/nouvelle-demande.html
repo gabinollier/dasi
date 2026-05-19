@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Demandes</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <h1>Demandes</h1>
+        <a href="./">Accueil</a>
+        
+        <h2>Liste des matieres</h2>
+        <div id="liste-matieres">
+        </div>
+        
+        <h2>Liste des thèmes</h2>
+        <div id="liste-themes">
+        </div>
+        
+        <textarea id="textarea-description"></textarea>
+        
+        <button id="submit-button">Envoyer ma demande</button>
+        
+        <script>
+            
+            let matieres;
+            
+            function initPage() {
+                listerMatieres();
+                document.getElementById("submit-button").addEventListener("click", envoyerDemande);
+            };
+            
+            async function envoyerDemande()
+            {
+                const description = document.getElementById("textarea-description").value;
+                const themes = document.getElementsByName("themes");
+                
+                let selectedTheme;
+                
+                for (let i = 0; i < themes.length; i++) 
+                {
+                    if (themes[i].checked) 
+                    {
+                        selectedTheme = themes[i].value;
+                        break;
+                    }
+                }
+                
+                let url = './ActionServlet?todo=creer-demande'; 
+                
+                const params = {
+                    themeName: selectedTheme,
+                    description: description
+                };
+                
+                let jsonResponse = await fetch(url, { 
+                    method: 'POST',
+                    body: new URLSearchParams(params)
+                })
+                    .then(
+                        function(httpResponse) {
+                            return httpResponse.json();
+                        }
+                    )
+                    .catch(
+                        function(error) {
+                            console.log(error);
+                            return null;
+                        }
+                    );
+                
+                if (jsonResponse)
+                {
+                    console.log(jsonResponse);
+                }
+                
+            }
+            
+            async function listerThemes(indiceMatiere) 
+            {
+                const matiere = matieres[indiceMatiere];
+                
+                listeThemes = document.getElementById("liste-themes");
+                listeThemes.innerHTML = "";
+                
+                for(const i in matiere["themes"])
+                    {
+                        const theme = matiere["themes"][i]["nom"];
+                        
+                        const input = document.createElement("input");
+                        
+                        
+                        input.type = "radio";
+                        input.name = "themes";
+                        input.value = theme;
+                        input.id = theme;
+                        listeThemes.appendChild(input);
+                        
+                        const label = document.createElement("label");
+                        label.for = theme;
+                        label.innerText = theme;
+                        listeThemes.appendChild(label);
+
+
+                    }
+            }
+            
+            async function listerMatieres() {
+                let params = {
+                    todo: "get-matieres"
+                };
+                let url = './ActionServlet?' + new URLSearchParams(params);
+
+                let jsonResponse = await fetch(url, { method: "GET" })
+                        .then(
+                            function(httpResponse) {
+                                return httpResponse.json();
+                            }
+                        )
+                        .catch(
+                            function(error) {
+                                console.log(error);
+                                return null;
+                            }
+                        );
+                console.log(jsonResponse);
+                if (jsonResponse) {
+                    matieres = jsonResponse;
+                    const listeMatiere = document.getElementById('liste-matieres');
+                    listeMatiere.innerHTML = "";
+                    for(const i in jsonResponse)
+                    {
+                        const matiere = jsonResponse[i];
+                        const nomMatiere = matiere["nom"];
+
+                        const input = document.createElement("input");
+                        input.type = "radio";
+                        input.name = "matieres";
+                        input.value = nomMatiere;
+                        input.id = nomMatiere;
+                        input.addEventListener("change", () => listerThemes(i));
+                        listeMatiere.appendChild(input);
+                        
+                        const label = document.createElement("label");
+                        label.for = nomMatiere;
+                        label.innerText = nomMatiere;
+                        listeMatiere.appendChild(label);
+
+
+                    }
+                }
+            }
+            window.onload = initPage;
+        </script>
+    </body>
+</html>
