@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import web.modele.AuthentifierAction;
 import web.modele.CreerDemandeAction;
+import web.modele.DeconnecterAction;
 import web.modele.FinirSoutienAction;
 import web.modele.GetMatieresAction;
 import web.modele.GetSoutienEnCoursIntervenantAction;
@@ -20,6 +21,8 @@ import web.modele.GetSoutiensEleveAction;
 import web.modele.GetSoutiensIntervenantAction;
 import web.modele.InscrireEleveAction;
 import web.vue.UtilisateurSerialisation;
+import web.modele.GetUtilisateurSessionAction;
+import web.vue.UtilisateurSessionSerialisation;
 import web.vue.MatieresSerialisation;
 import web.vue.SoutienSerialisation;
 import web.vue.SoutiensListSerialisation;
@@ -90,6 +93,11 @@ public class ActionServlet extends HttpServlet {
                 new SuccessSerialisation().appliquer(request, response);
                 break;
             }
+            case "deconnecter" : {
+                new DeconnecterAction().execute(request);
+                new SuccessSerialisation().appliquer(request, response);
+                break;
+            }
             case "get-soutiens-eleve" : {
                 new GetSoutiensEleveAction().execute(request);
                 new SoutiensListSerialisation().appliquer(request, response);
@@ -98,6 +106,11 @@ public class ActionServlet extends HttpServlet {
             case "get-soutiens-intervenant" : {
                 new GetSoutiensIntervenantAction().execute(request);
                 new SoutiensListSerialisation().appliquer(request, response);
+                break;
+            }
+            case "get-utilisateur-session" : {
+                new GetUtilisateurSessionAction().execute(request);
+                new UtilisateurSessionSerialisation().appliquer(request, response);
                 break;
             }
             default : {

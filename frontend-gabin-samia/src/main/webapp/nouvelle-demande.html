@@ -6,6 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="styles.css">
         <script src="https://unpkg.com/lucide@latest"></script>
+        <script src="sidebar-user.js"></script>
     </head>
     <body class="sidebar-body">
         <div class="sidebar-layout">
@@ -37,9 +38,9 @@
                     <div class="sidebar-user">
                         <div class="sidebar-user-name">
                             <span class="sidebar-user-icon"><i data-lucide="user"></i></span>
-                            Lucas Martin
+                            <span id="sidebar-user-name">Utilisateur</span>
                         </div>
-                        <div class="sidebar-user-grade">4ème</div>
+                        <div class="sidebar-user-grade" id="sidebar-user-grade">-</div>
                     </div>
                     <a href="#" class="sidebar-logout">
                         <span><i data-lucide="log-out"></i></span>

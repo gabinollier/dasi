@@ -28,11 +28,18 @@ public class AuthentifierAction extends Action {
                 request.setAttribute("intervenant", intervenant);
                 request.getSession().setAttribute("identifiant", identifiant);
                 request.getSession().setAttribute("motdepasse", motDePasse);
+                request.getSession().setAttribute("nom", intervenant.getNom());
+                request.getSession().setAttribute("prenom", intervenant.getPrenom());
+                request.getSession().setAttribute("type", "intervenant");
             }
         } else {
             request.setAttribute("eleve", eleve);
             request.getSession().setAttribute("identifiant", identifiant);
             request.getSession().setAttribute("motdepasse", motDePasse);
+            request.getSession().setAttribute("nom", eleve.getNom());
+            request.getSession().setAttribute("prenom", eleve.getPrenom());
+            request.getSession().setAttribute("type", "eleve");
+            request.getSession().setAttribute("classe", eleve.getNiveauScolaire());
         }
 
     }
