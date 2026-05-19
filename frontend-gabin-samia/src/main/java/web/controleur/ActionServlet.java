@@ -16,10 +16,13 @@ import web.modele.CreerDemandeAction;
 import web.modele.FinirSoutienAction;
 import web.modele.GetMatieresAction;
 import web.modele.GetSoutienEnCoursIntervenantAction;
+import web.modele.GetSoutiensEleveAction;
+import web.modele.GetSoutiensIntervenantAction;
 import web.modele.InscrireEleveAction;
 import web.vue.UtilisateurSerialisation;
 import web.vue.MatieresSerialisation;
 import web.vue.SoutienSerialisation;
+import web.vue.SoutiensListSerialisation;
 import web.vue.SuccessSerialisation;
 
 /**
@@ -85,6 +88,16 @@ public class ActionServlet extends HttpServlet {
             case "finir-soutien" : {
                 new FinirSoutienAction().execute(request);
                 new SuccessSerialisation().appliquer(request, response);
+                break;
+            }
+            case "get-soutiens-eleve" : {
+                new GetSoutiensEleveAction().execute(request);
+                new SoutiensListSerialisation().appliquer(request, response);
+                break;
+            }
+            case "get-soutiens-intervenant" : {
+                new GetSoutiensIntervenantAction().execute(request);
+                new SoutiensListSerialisation().appliquer(request, response);
                 break;
             }
             default : {
