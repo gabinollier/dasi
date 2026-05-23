@@ -115,20 +115,16 @@
                         <h2 class="status-title">Vous êtes disponible</h2>
                         <p class="status-description">Vous serez notifié dès qu'un élève fait une demande dans vos matières. Merci pour votre engagement !</p>
 
-                        <div style="background: white; border-radius: 12px; padding: 30px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; text-align: center;">
-                            <div>
-                                <div style="font-size: 32px; font-weight: 700; color: #5b5dff; margin-bottom: 5px;">24</div>
-                                <div style="font-size: 13px; color: #999;">soutiens réalisés</div>
-                            </div>
-                            <div>
-                                <div style="font-size: 32px; font-weight: 700; color: #ff6b4a; margin-bottom: 5px;">18h</div>
-                                <div style="font-size: 13px; color: #999;">d'accompagnement</div>
-                            </div>
-                            <div>
-                                <div style="font-size: 32px; font-weight: 700; color: #4caf50; margin-bottom: 5px;">4.8</div>
-                                <div style="font-size: 13px; color: #999;">note moyenne</div>
-                            </div>
-                        </div>
+                         <div style="background: white; border-radius: 12px; padding: 30px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; text-align: center;">
+                             <div>
+                                 <div id="stats-soutiens" style="font-size: 32px; font-weight: 700; color: #5b5dff; margin-bottom: 5px;">0</div>
+                                 <div style="font-size: 13px; color: #999;">soutiens réalisés</div>
+                             </div>
+                             <div>
+                                 <div id="stats-heures" style="font-size: 32px; font-weight: 700; color: #ff6b4a; margin-bottom: 5px;">0h</div>
+                                 <div style="font-size: 13px; color: #999;">d'accompagnement</div>
+                             </div>
+                         </div>
                     </div>
                 </div>
             </main>
@@ -161,6 +157,7 @@
             function showDisponibleSection() {
                 document.getElementById("soutien-section").style.display = "none";
                 document.getElementById("disponible-section").style.display = "block";
+                chargerStats();
                 lucide.createIcons();
             }
             
@@ -190,6 +187,52 @@
                 if (jsonResponse) {
                     console.log(jsonResponse);
                     afficherSoutienEnCours();
+                }
+            }
+
+            async function chargerStats()
+            {
+                let params = {
+                    todo: "get-soutiens-intervenant"
+                };
+                let url = './ActionServlet?' + new URLSearchParams(params);
+
+                let jsonResponse = await fetch(url, { method: "GET" })
+                        .then(
+                            function(httpResponse) {
+                                return httpResponse.json();
+                            }
+                        )
+                        .catch(
+                            function(error) {
+                                console.log(error);
+                                return null;
+                            }
+                        );
+                if (jsonResponse) {
+                    const nbSoutiens = jsonResponse.length;
+                    
+                    let totalMinutes = 0;
+                    jsonResponse.forEach(soutien => {
+                        if (soutien.heureDebut && soutien.heureFin) {
+                            const [hD, mD, sD] = soutien.heureDebut.split(':').map(Number);
+                            const [hF, mF, sF] = soutien.heureFin.split(':').map(Number);
+                            
+                            const debutMs = hD * 3600000 + mD * 60000 + sD * 1000;
+                            const finMs = hF * 3600000 + mF * 60000 + sF * 1000;
+                            
+                            const diffMs = finMs - debutMs;
+                            totalMinutes += Math.round(diffMs / 60000);
+                        }
+                    });
+                    
+                    const totalHeures = Math.floor(totalMinutes / 60);
+                    const minutesRestantes = totalMinutes % 60;
+                    const heuresText = totalHeures > 0 ? `${totalHeures}h` : '';
+                    const minutesText = minutesRestantes > 0 ? `${minutesRestantes}min` : '';
+                    
+                    document.getElementById("stats-soutiens").textContent = nbSoutiens;
+                    document.getElementById("stats-heures").textContent = `${heuresText}${minutesText}`;
                 }
             }  
             
