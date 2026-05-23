@@ -52,6 +52,18 @@ public class SoutiensListSerialisation extends Serialisation {
                         .add("nomEleve", soutien.getEleve().getNom())
                         .add("classeEleve", soutien.getEleve().getNiveauScolaire());
                 
+                if (soutien.getEleve().getEtablissement() != null) {
+                    objetBuilder
+                            .add("etablissementNom", soutien.getEleve().getEtablissement().getNom())
+                            .add("etablissementLat", soutien.getEleve().getEtablissement().getLatitude())
+                            .add("etablissementLng", soutien.getEleve().getEtablissement().getLongitude());
+                } else {
+                    objetBuilder
+                            .add("etablissementNom", "")
+                            .add("etablissementLat", 0)
+                            .add("etablissementLng", 0);
+                }
+                
                 arrayBuilder.add(objetBuilder);
             }
         }

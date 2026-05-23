@@ -5,7 +5,9 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="styles.css">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
         <script src="https://unpkg.com/lucide@latest"></script>
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
         <script src="sidebar-user.js"></script>
     </head>
     <body class="sidebar-body">
@@ -54,6 +56,10 @@
                     <h1>Mon historique</h1>
                     <p id="soutiens-count" style="color: #999; font-size: 14px;">0 soutiens terminés</p>
                 </div>
+
+                <div class="section-title">Établissements visités</div>
+                
+                <div id="map" style="height: 300px; border-radius: 8px; margin-bottom: 30px;"></div>
 
                 <div class="section-title">Mes derniers soutiens</div>
 
@@ -128,6 +134,8 @@
                     const tbody = document.getElementById('soutiens-table-body');
                     tbody.innerHTML = '';
                     
+                    const etablissementsMap = new Map();
+                    
                     soutiens.forEach((soutien, index) => {
                         const duree = calculateDuration(soutien.heureDebut, soutien.heureFin);
                         const date = formatDate(soutien.dateDebut);
@@ -137,7 +145,19 @@
                         const eleveNom = `${soutien.prenomEleve} ${soutien.nomEleve}`;
                         const eleveclasse = soutien.classeEleve;
                         
-                        // Main row
+                        if (soutien.etablissementNom && soutien.etablissementLat !== 0 && soutien.etablissementLng !== 0) {
+                            const key = `${soutien.etablissementLat},${soutien.etablissementLng}`;
+                            if (!etablissementsMap.has(key)) {
+                                etablissementsMap.set(key, {
+                                    nom: soutien.etablissementNom,
+                                    lat: soutien.etablissementLat,
+                                    lng: soutien.etablissementLng,
+                                    count: 0
+                                });
+                            }
+                            etablissementsMap.get(key).count++;
+                        }
+                        
                         const tr = document.createElement('tr');
                         tr.className = 'row-expandable';
                         tr.innerHTML = `
@@ -179,11 +199,12 @@
                     });
                     
                     lucide.createIcons();
+                    
+                    initMap(etablissementsMap);
                 })
                 .catch(error => console.error('Erreur:', error));
             }
 
-            // Toggle bilan visibility
             function toggleBilan(event, index) {
                 event.stopPropagation();
                 const expandedRow = document.querySelector(`.expanded-row-${index}`);
@@ -191,6 +212,35 @@
                     const btn = event.currentTarget;
                     expandedRow.classList.toggle('active');
                     btn.classList.toggle('expanded');
+                }
+            }
+
+            // Initialize map with establishments
+            function initMap(etablissementsMap) {
+                const mapContainer = document.getElementById('map');
+                mapContainer.innerHTML = '';
+                
+                if (etablissementsMap.size === 0) {
+                    mapContainer.innerHTML = '<div style="display: flex; align-items: center; justify-content: center; height: 100%; color: #999;">Aucun établissement à afficher</div>';
+                    return;
+                }
+                
+                const etablissements = Array.from(etablissementsMap.values());
+                
+                const map = L.map('map').setView([etablissements[0].lat, etablissements[0].lng], 10);
+                
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                }).addTo(map);
+                
+                etablissements.forEach(etab => {
+                    const marker = L.marker([etab.lat, etab.lng]).addTo(map);
+                    marker.bindPopup(`<b>${etab.nom}</b><br>${etab.count} soutiens effectués`);
+                });
+                
+                const group = L.featureGroup(L.map(etablissements, etab => L.marker([etab.lat, etab.lng])));
+                if (group.getLayers().length > 1) {
+                    map.fitBounds(group.getBounds().pad(0.1));
                 }
             }
 
