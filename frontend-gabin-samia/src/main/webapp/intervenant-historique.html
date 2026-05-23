@@ -57,10 +57,6 @@
                     <p id="soutiens-count" style="color: #999; font-size: 14px;">0 soutiens terminés</p>
                 </div>
 
-                <div class="section-title">Établissements visités</div>
-                
-                <div id="map" style="height: 300px; border-radius: 8px; margin-bottom: 30px;"></div>
-
                 <div class="section-title">Mes derniers soutiens</div>
 
                 <table class="history-table">
@@ -77,6 +73,10 @@
                     <tbody id="soutiens-table-body">
                     </tbody>
                 </table>
+
+                <div class="section-title">Statistiques sur les établissements</div>
+                
+                <div id="map" style="height: 300px; border-radius: 8px; margin-bottom: 30px;"></div>
             </main>
         </div>
 
@@ -152,7 +152,8 @@
                                     nom: soutien.etablissementNom,
                                     lat: soutien.etablissementLat,
                                     lng: soutien.etablissementLng,
-                                    count: 0
+                                    count: 0,
+                                    dureeMoyenne: soutien.etablissementDureeMoyenneSoutiens
                                 });
                             }
                             etablissementsMap.get(key).count++;
@@ -235,7 +236,8 @@
                 
                 etablissements.forEach(etab => {
                     const marker = L.marker([etab.lat, etab.lng]).addTo(map);
-                    marker.bindPopup(`<b>${etab.nom}</b><br>${etab.count} soutiens effectués`);
+                    const dureeMoyenneText = etab.dureeMoyenne ? `Durée moyenne: ${Math.round(etab.dureeMoyenne / 60000)} min` : '';
+                    marker.bindPopup(`<b>${etab.nom}</b><br>${etab.count} soutiens effectués<br>${dureeMoyenneText}`);
                 });
                 
                 const group = L.featureGroup(L.map(etablissements, etab => L.marker([etab.lat, etab.lng])));
