@@ -1,11 +1,121 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Start Page</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>INSTRUCT'IF - Réseau de soutien scolaire bénévole</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="styles.css">
+        <script src="https://unpkg.com/lucide@latest"></script>
     </head>
-    <body>
-        <h1>Ceci sera la landing page.</h1>
-        <a href="./connection.html">Connection</a>
+    <body class="landing-page">
+        <header class="landing-header">
+            <div class="header-container">
+                <div class="logo">INSTRUCT'<span class="logo-highlight">IF</span></div>
+                <a href="./connexion.html" class="header-button">Accéder à mon espace</a>
+            </div>
+        </header>
+
+        <main>
+            <section class="hero">
+                <p class="hero-subtitle">RÉSEAU DE SOUTIEN SCOLAIRE BÉNÉVOLE</p>
+                <h1 class="hero-title">Besoin d'aide pour tes devoirs ? Des <span class="highlight">bénévoles</span> sont là pour toi.</h1>
+                <p class="hero-description">INSTRUCT'IF met gratuitement en relation les collégiens de la 3ème à la 6ème avec des étudiants, enseignants et autres profils bénévoles pour des séances de soutien en visioconférence, instantanément et sans inscription payante.</p>
+                
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="stat-number">5 000</div>
+                        <div class="stat-label">élèves inscrits</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">50</div>
+                        <div class="stat-label">intervenants bénévoles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">6</div>
+                        <div class="stat-label">matières disponibles</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="roles">
+                <div class="role-card">
+                    <div class="role-icon"><i data-lucide="book-open"></i></div>
+                    <h2>Je suis élève</h2>
+                    <p>Tu es en collège (6ème à 3ème) et tu as besoin d'aide pour les leçons ou les devoirs ? Décris ta difficulté, choisis la matière et un intervenant disponible te rejoint en quelques secondes en visio.</p>
+                    <ul class="role-features">
+                        <li><i data-lucide="check"></i> Mise en relation instantanée</li>
+                        <li><i data-lucide="check"></i> Gratuit et sans engagement</li>
+                        <li><i data-lucide="check"></i> Toutes les matières du collège</li>
+                    </ul>
+                </div>
+
+                <div class="role-card">
+                    <div class="role-icon"><i data-lucide="users"></i></div>
+                    <h2>Je suis intervenant</h2>
+                    <p>Tu es étudiant, enseignant ou simplement bénévole et tu veux aider des collégiens ? Inscris-toi, définis les matières que tu peux accompagner et reçois directement les demandes de soutien.</p>
+                    <ul class="role-features">
+                        <li><i data-lucide="check"></i> Flexible et 100% bénévole</li>
+                        <li><i data-lucide="check"></i> Notification instantanée</li>
+                        <li><i data-lucide="check"></i> Bilan de séance envoyé par mail</li>
+                    </ul>
+                </div>
+            </section>
+
+            <div class="cta-container">
+                <button class="cta-button" onclick="window.location.href='./inscription.html'">S'inscrire en tant qu'élève</button>
+            </div>
+
+            <section class="process">
+                <h2>Comment ça marche ?</h2>
+                <p class="process-subtitle">Une mise en relation en 3 étapes, en moins d'une minute.</p>
+                
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-number">01</div>
+                        <div class="step-icon"><i data-lucide="edit-3"></i></div>
+                        <div class="step-title">Tu décris ta demande</div>
+                        <p>Choisis la matière, ton thème et décris la difficulté en quelques mots.</p>
+                    </div>
+
+                    <div class="step-arrow">→</div>
+
+                    <div class="step">
+                        <div class="step-number">02</div>
+                        <div class="step-icon"><i data-lucide="user"></i></div>
+                        <div class="step-title">On trouve un intervenant</div>
+                        <p>Un bénévole disponible est notifié automatiquement et prend en charge ta demande.</p>
+                    </div>
+
+                    <div class="step-arrow">→</div>
+
+                    <div class="step">
+                        <div class="step-number">03</div>
+                        <div class="step-icon"><i data-lucide="video"></i></div>
+                        <div class="step-title">Vous vous retrouvez en visio</div>
+                        <p>Un lien de visioconférence est généré automatiquement. La séance commence immédiatement.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="landing-footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="logo">INSTRUCT'<span class="logo-highlight">IF</span></div>
+                    <p>Réseau de soutien scolaire bénévole.</p>
+                </div>
+                <div class="footer-section">
+                    <a href="./connexion.html">Se connecter</a>
+                    <a href="./inscription.html">Créer un compte élève</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 INSTRUCT'IF — Projet INSA Lyon</p>
+            </div>
+        </footer>
+
+        <script>
+            lucide.createIcons();
+        </script>
     </body>
 </html>

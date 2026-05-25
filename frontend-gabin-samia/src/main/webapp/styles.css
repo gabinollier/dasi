@@ -881,3 +881,412 @@ textarea.bilan {
     color: #666;
     font-size: 13px;
 }
+
+/* ===== LANDING PAGE ===== */
+body.landing-page {
+    background: white;
+    padding: 0;
+    display: block;
+}
+
+.landing-header {
+    background: white;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 20px;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 700;
+    color: #333;
+    letter-spacing: -0.5px;
+}
+
+.logo-highlight {
+    color: #5b5dff;
+}
+
+.logo-highlight {
+    color: #5b5dff;
+}
+
+.header-button {
+    background: #5b5dff;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+.header-button:hover {
+    background: #4b4ddb;
+}
+
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.hero {
+    background: linear-gradient(135deg, #f5f7ff 0%, #e8eaff 100%);
+    padding: 80px 40px;
+    text-align: center;
+    border-radius: 0;
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+}
+
+.hero-subtitle {
+    color: #5b5dff;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+.hero-title {
+    font-size: 48px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 25px;
+    line-height: 1.2;
+}
+
+.hero-title .highlight {
+    color: #5b5dff;
+}
+
+.hero-description {
+    font-size: 16px;
+    color: #666;
+    max-width: 700px;
+    margin: 0 auto 50px;
+    line-height: 1.6;
+}
+
+.stats {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.stat-card {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 12px 24px;
+    border-radius: 20px;
+    border: 1px solid rgba(91, 93, 255, 0.2);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 8px rgba(91, 93, 255, 0.1);
+}
+
+.stat-number {
+    font-size: 16px;
+    font-weight: 700;
+    color: #5b5dff;
+}
+
+.stat-label {
+    font-size: 13px;
+    color: #666;
+    margin-top: 0;
+}
+
+.roles {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    padding: 80px 40px;
+}
+
+.role-card {
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    border: 1px solid #e0e0e0;
+    text-align: center;
+    transition: all 0.2s;
+}
+
+.role-card:hover {
+    border-color: #5b5dff;
+    box-shadow: 0 8px 24px rgba(91, 93, 255, 0.1);
+}
+
+.role-icon {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.role-icon i {
+    width: 48px;
+    height: 48px;
+    color: #5b5dff;
+}
+
+.role-card h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.role-card p {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 25px;
+}
+
+.role-features {
+    list-style: none;
+    margin-bottom: 30px;
+    text-align: left;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 8px;
+}
+
+.role-features li {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.role-features li i {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    color: #4caf50;
+}
+
+.role-features li:last-child {
+    margin-bottom: 0;
+}
+
+.cta-container {
+    text-align: center;
+    padding: 40px;
+    background: white;
+}
+
+.cta-button {
+    padding: 14px 48px;
+    background: #5b5dff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: inline-block;
+}
+
+.cta-button:hover {
+    background: #4b4ddb;
+}
+
+.process {
+    background: white;
+    padding: 80px 40px;
+    text-align: center;
+}
+
+.process h2 {
+    font-size: 36px;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.process-subtitle {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 60px;
+}
+
+.steps {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.step {
+    flex: 0 1 280px;
+    text-align: center;
+}
+
+.step-number {
+    font-size: 48px;
+    font-weight: 700;
+    color: #e8eaff;
+    margin-bottom: 15px;
+}
+
+.step-icon {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.step-icon i {
+    width: 48px;
+    height: 48px;
+    color: #5b5dff;
+}
+
+.step-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 12px;
+}
+
+.step p {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.6;
+}
+
+.step-arrow {
+    font-size: 32px;
+    color: #5b5dff;
+    font-weight: 300;
+    flex: 0 0 auto;
+    margin: 0 -15px;
+}
+
+.landing-footer {
+    background: #1a1f3a;
+    color: white;
+    padding: 60px 40px 30px;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    margin-bottom: 40px;
+}
+
+.footer-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.footer-section .logo {
+    color: white;
+    margin-bottom: 12px;
+}
+
+.footer-section p {
+    font-size: 14px;
+    color: #999;
+}
+
+.footer-section a {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    margin-bottom: 12px;
+    transition: color 0.2s;
+}
+
+.footer-section a:hover {
+    color: #5b5dff;
+}
+
+.footer-bottom {
+    border-top: 1px solid #333;
+    padding-top: 20px;
+    text-align: center;
+    font-size: 13px;
+    color: #666;
+}
+
+@media (max-width: 768px) {
+    .header-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .hero {
+        padding: 50px 20px;
+    }
+
+    .hero-title {
+        font-size: 32px;
+    }
+
+    .hero-description {
+        font-size: 14px;
+    }
+
+    .stats {
+        gap: 20px;
+        flex-direction: column;
+    }
+
+    .roles {
+        grid-template-columns: 1fr;
+        padding: 50px 20px;
+        gap: 30px;
+    }
+
+    .cta-container {
+        padding: 30px 20px;
+    }
+
+    .process {
+        padding: 50px 20px;
+    }
+
+    .process h2 {
+        font-size: 28px;
+    }
+
+    .steps {
+        gap: 15px;
+    }
+
+    .step {
+        flex: 0 1 100%;
+    }
+
+    .step-arrow {
+        display: none;
+    }
+
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+}
