@@ -54,10 +54,10 @@ public class SoutiensListSerialisation extends Serialisation {
                 
                 if (soutien.getEleve().getEtablissement() != null) {
                     objetBuilder
-                            .add("etablissementNom", soutien.getEleve().getEtablissement().getNom())
-                            .add("etablissementLat", soutien.getEleve().getEtablissement().getLatitude())
-                            .add("etablissementLng", soutien.getEleve().getEtablissement().getLongitude())
-                            .add("etablissementDureeMoyenneSoutiens", soutien.getEleve().getEtablissement().getMoyenneDuree());
+                            .add("etablissementNom", soutien.getEleve().getEtablissement().getNom() != null ? soutien.getEleve().getEtablissement().getNom() : "")
+                            .add("etablissementLat", soutien.getEleve().getEtablissement().getLatitude() != null ? soutien.getEleve().getEtablissement().getLatitude() : 0)
+                            .add("etablissementLng", soutien.getEleve().getEtablissement().getLongitude() != null ? soutien.getEleve().getEtablissement().getLongitude() : 0)
+                            .add("etablissementDureeMoyenneSoutiens", soutien.getEleve().getEtablissement().getMoyenneDuree() != null ? soutien.getEleve().getEtablissement().getMoyenneDuree() : 0);
                 } else {
                     objetBuilder
                             .add("etablissementNom", "")
