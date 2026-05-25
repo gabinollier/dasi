@@ -1,0 +1,9 @@
+BUGS :
+
+- la classe de l'élève s'affiche pas bien côté intervenant
+- côté élève, la page 'intervenant trouvé' affiche pas super bien l'heure de début et affiche pas super bien les détails de l'intervenant
+- en vrai faut rajouter une marge en haut
+- dans les deux historiques, la flèche qui tourne a un bg de hover trop moche
+
+FEATURES A FAIRE :
+- la page de détails de l'élève côté intervenant

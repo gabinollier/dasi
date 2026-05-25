@@ -15,12 +15,31 @@ body {
 }
 
 .container {
-    background: white;
-    border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     max-width: 680px;
     width: 100%;
     padding: 50px;
+}
+
+.surface {
+    background: white;
+    border-radius: 12px;
+}
+
+.surface-border {
+    border: 1px solid #e0e0e0;
+}
+
+.shadow-sm {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.bg-soft {
+    background: #f9f9f9;
+}
+
+.bg-muted {
+    background: #f5f5f5;
 }
 
 .form-header {
@@ -156,6 +175,9 @@ body.sidebar-body {
     position: fixed;
     height: 100vh;
     overflow-y: auto;
+    left: 0;
+    top: 0;
+    z-index: 100;
 }
 
 .sidebar-logo {
@@ -227,7 +249,6 @@ body.sidebar-body {
 .sidebar-user {
     padding: 12px 15px;
     border-radius: 8px;
-    background: #f9f9f9;
     margin-bottom: 10px;
 }
 
@@ -447,9 +468,6 @@ button.secondary:hover {
     text-align: center;
     padding: 60px 40px;
     display: none;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .status-message.show {
@@ -467,7 +485,8 @@ button.secondary:hover {
     font-size: 40px;
 }
 
-.status-icon.success {
+.status-icon.success,
+.status-icon.in-progress {
     background: #e8f5e9;
     color: #4caf50;
 }
@@ -493,7 +512,6 @@ button.secondary:hover {
 
 /* Intervenant Card */
 .intervenant-card {
-    background: #f9f9f9;
     border-radius: 12px;
     padding: 30px;
     margin-bottom: 30px;
@@ -630,11 +648,7 @@ button.secondary:hover {
 }
 
 .profile-card {
-    background: white;
-    border-radius: 12px;
     padding: 16px;
-    border: 1px solid #e0e0e0;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .profile-label {
@@ -676,10 +690,6 @@ button.secondary:hover {
     font-weight: 600;
 }
 
-/* Tabs/Pills */
-.tab-pills {
-    display: none;
-}
 
 button.btn-success {
     background: #ff6b4a;
@@ -696,13 +706,7 @@ button.btn-success:hover {
 }
 
 /* Soutien En Cours Variant */
-.status-icon.in-progress {
-    background: #e8f5e9;
-    color: #4caf50;
-}
-
 .detail-group.demande {
-    background: #f5f5f5;
     padding: 15px;
     border-radius: 8px;
     grid-column: 1 / -1;
@@ -923,7 +927,6 @@ textarea.bilan {
 
 .expanded-content {
     padding: 20px;
-    background: #f9f9f9;
 }
 
 .bilan-label {
@@ -954,14 +957,9 @@ textarea.bilan {
     text-transform: capitalize;
 }
 
-.status-badge.terminated {
+.status-badge.finished {
     background: #d4edda;
     color: #155724;
-}
-
-.status-badge.cancelled {
-    background: #f8d7da;
-    color: #721c24;
 }
 
 .status-badge.ongoing {
@@ -969,34 +967,6 @@ textarea.bilan {
     color: #0c5460;
 }
 
-.status-badge.finished {
-    background: #d4edda;
-    color: #155724;
-}
-
-/* ===== HISTORY PAGE LAYOUT ===== */
-.sidebar-layout {
-    display: flex;
-}
-
-.sidebar {
-    width: 255px;
-    position: fixed;
-    left: 0;
-    top: 0;
-    height: 100vh;
-    background: white;
-    border-right: 1px solid #e0e0e0;
-    padding: 20px;
-    overflow-y: auto;
-    z-index: 100;
-}
-
-.main-content {
-    margin-left: 255px;
-    padding: 40px;
-    flex: 1;
-}
 
 /* ===== INTERVENANT TABLE SPECIFIC ===== */
 .duration-column {
@@ -1017,7 +987,6 @@ body.landing-page {
 }
 
 .landing-header {
-    background: white;
     border-bottom: 1px solid #e0e0e0;
     padding: 20px;
     position: sticky;
@@ -1045,22 +1014,23 @@ body.landing-page {
     color: #5b5dff;
 }
 
-.logo-highlight {
-    color: #5b5dff;
-}
-
-.header-button {
+.header-button,
+.cta-button {
     background: #5b5dff;
     color: white;
-    padding: 12px 24px;
     border-radius: 8px;
-    text-decoration: none;
     font-weight: 600;
-    font-size: 14px;
     transition: background 0.2s;
 }
 
-.header-button:hover {
+.header-button {
+    padding: 12px 24px;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.header-button:hover,
+.cta-button:hover {
     background: #4b4ddb;
 }
 
@@ -1069,9 +1039,14 @@ main {
     margin: 0 auto;
 }
 
+.hero,
+.roles,
+.process {
+    padding: 80px 40px;
+}
+
 .hero {
     background: linear-gradient(135deg, #f5f7ff 0%, #e8eaff 100%);
-    padding: 80px 40px;
     text-align: center;
     border-radius: 0;
     width: 100vw;
@@ -1111,11 +1086,15 @@ main {
     line-height: 1.6;
 }
 
-.stats {
+.stats,
+.steps {
     display: flex;
     justify-content: center;
-    gap: 20px;
     flex-wrap: wrap;
+}
+
+.stats {
+    gap: 20px;
 }
 
 .stat-card {
@@ -1146,14 +1125,10 @@ main {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 40px;
-    padding: 80px 40px;
 }
 
 .role-card {
-    background: white;
     padding: 40px;
-    border-radius: 12px;
-    border: 1px solid #e0e0e0;
     text-align: center;
     transition: all 0.2s;
 }
@@ -1168,7 +1143,8 @@ main {
     margin-bottom: 20px;
 }
 
-.role-icon i {
+.role-icon i,
+.step-icon i {
     width: 48px;
     height: 48px;
     color: #5b5dff;
@@ -1192,7 +1168,6 @@ main {
     margin-bottom: 30px;
     text-align: left;
     padding: 20px;
-    background: #f9f9f9;
     border-radius: 8px;
 }
 
@@ -1219,29 +1194,17 @@ main {
 .cta-container {
     text-align: center;
     padding: 40px;
-    background: white;
 }
 
 .cta-button {
     padding: 14px 48px;
-    background: #5b5dff;
-    color: white;
     border: none;
-    border-radius: 8px;
     font-size: 16px;
-    font-weight: 600;
     cursor: pointer;
-    transition: background 0.2s;
     display: inline-block;
 }
 
-.cta-button:hover {
-    background: #4b4ddb;
-}
-
 .process {
-    background: white;
-    padding: 80px 40px;
     text-align: center;
 }
 
@@ -1258,11 +1221,8 @@ main {
 }
 
 .steps {
-    display: flex;
-    justify-content: center;
     align-items: center;
     gap: 30px;
-    flex-wrap: wrap;
 }
 
 .step {
@@ -1282,11 +1242,6 @@ main {
     margin-bottom: 20px;
 }
 
-.step-icon i {
-    width: 48px;
-    height: 48px;
-    color: #5b5dff;
-}
 
 .step-title {
     font-size: 18px;
@@ -1313,6 +1268,17 @@ main {
     background: #1a1f3a;
     color: white;
     padding: 60px 40px 30px;
+}
+
+.landing-header,
+.cta-container,
+.process {
+    background: white;
+}
+
+.cta-container,
+.process {
+    text-align: center;
 }
 
 .footer-content {
@@ -1365,7 +1331,9 @@ main {
         gap: 15px;
     }
 
-    .hero {
+    .hero,
+    .roles,
+    .process {
         padding: 50px 20px;
     }
 
@@ -1384,16 +1352,11 @@ main {
 
     .roles {
         grid-template-columns: 1fr;
-        padding: 50px 20px;
         gap: 30px;
     }
 
     .cta-container {
         padding: 30px 20px;
-    }
-
-    .process {
-        padding: 50px 20px;
     }
 
     .process h2 {
