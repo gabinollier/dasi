@@ -147,25 +147,41 @@
                                 <h2 id="profile-name">—</h2>
                                 <div class="profile-meta">
                                     <span class="profile-pill" id="profile-niveau">—</span>
-                                    <span class="profile-subline" id="profile-email"></span>
+                                    <span class="profile-subline is-hidden" id="profile-etablissement-line"></span>
                                 </div>
                             </div>
                         </div>
 
                         <div class="profile-grid">
                             <div class="profile-card">
-                                <div class="profile-label">Nom</div>
-                                <div class="profile-value" id="profile-nom">—</div>
+                                <div class="profile-label">Établissement</div>
+                                <div class="profile-value" id="profile-etablissement">—</div>
                             </div>
                             <div class="profile-card">
-                                <div class="profile-label">Prénom</div>
-                                <div class="profile-value" id="profile-prenom">—</div>
+                                <div class="profile-label">Code UAI</div>
+                                <div class="profile-value" id="profile-uai">—</div>
                             </div>
                             <div class="profile-card">
-                                <div class="profile-label">Date de naissance</div>
-                                <div class="profile-value" id="profile-naissance">—</div>
+                                <div class="profile-label">Séances totales</div>
+                                <div class="profile-value" id="profile-seances">—</div>
                             </div>
                         </div>
+
+                        <div class="section-title">Historique des soutiens</div>
+
+                        <table class="history-table">
+                            <thead>
+                                <tr>
+                                    <th>DATE</th>
+                                    <th>MATIÈRE</th>
+                                    <th>THÈME</th>
+                                    <th>INTERVENANT</th>
+                                    <th>STATUT</th>
+                                </tr>
+                            </thead>
+                            <tbody id="profile-history-body">
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </main>
@@ -195,20 +211,25 @@
                 const eleve = currentSoutien.eleve || {};
                 const nomComplet = `${eleve.prenom || ''} ${eleve.nom || ''}`.trim();
                 document.getElementById("profile-name").textContent = nomComplet || "—";
-                document.getElementById("profile-nom").textContent = eleve.nom || "—";
-                document.getElementById("profile-prenom").textContent = eleve.prenom || "—";
-                document.getElementById("profile-naissance").textContent = formatDate(eleve.dateNaissance);
-                const emailLine = document.getElementById("profile-email");
-                if (emailLine) {
-                    if (eleve.email) {
-                        emailLine.textContent = eleve.email;
-                        emailLine.classList.remove("is-hidden");
+                document.getElementById("profile-niveau").textContent = eleve.niveauScolaire ? `${eleve.niveauScolaire}ème` : "—";
+                const etablissementNom = eleve.etablissementNom || "";
+                const etablissementCodeUai = eleve.etablissementCodeUai || "";
+                document.getElementById("profile-etablissement").textContent = etablissementNom || "—";
+                document.getElementById("profile-uai").textContent = etablissementCodeUai || "—";
+                const etablissementLine = document.getElementById("profile-etablissement-line");
+                if (etablissementLine) {
+                    if (etablissementNom) {
+                        etablissementLine.textContent = etablissementNom;
+                        etablissementLine.classList.remove("is-hidden");
                     } else {
-                        emailLine.textContent = "";
-                        emailLine.classList.add("is-hidden");
+                        etablissementLine.textContent = "";
+                        etablissementLine.classList.add("is-hidden");
                     }
                 }
-                document.getElementById("profile-niveau").textContent = eleve.niveauScolaire ? `${eleve.niveauScolaire}ème` : "—";
+                const soutiensEleve = Array.isArray(currentSoutien.soutiensEleve) ? currentSoutien.soutiensEleve : [];
+                const soutiensCount = Number.isFinite(currentSoutien.soutiensEleveCount) ? currentSoutien.soutiensEleveCount : soutiensEleve.length;
+                document.getElementById("profile-seances").textContent = formatSeancesTotal(soutiensCount);
+                renderHistoriqueEleve(soutiensEleve);
 
                 document.getElementById("soutien-section").style.display = "none";
                 document.getElementById("disponible-section").style.display = "none";
@@ -221,15 +242,74 @@
                 afficherSoutienEnCours();
             }
 
-            function formatDate(dateString) {
-                if (!dateString) {
+            function formatSeancesTotal(nombre) {
+                if (!Number.isFinite(nombre)) {
                     return "—";
                 }
-                const date = new Date(dateString);
-                if (Number.isNaN(date.getTime())) {
-                    return dateString;
+                const suffix = nombre === 1 ? "séance" : "séances";
+                return `${nombre} ${suffix}`;
+            }
+
+            function formatDate(dateIso) {
+                if (!dateIso) {
+                    return "—";
                 }
-                return date.toLocaleDateString("fr-FR");
+                const date = new Date(dateIso);
+                if (Number.isNaN(date.getTime())) {
+                    return dateIso;
+                }
+                const options = { day: 'numeric', month: 'short', year: 'numeric' };
+                return date.toLocaleDateString('fr-FR', options);
+            }
+
+            function getStatusClass(statut) {
+                const lower = (statut || '').toLowerCase();
+                if (lower === 'finished') return 'finished';
+                if (lower === 'cancelled') return 'cancelled';
+                if (lower === 'started') return 'ongoing';
+                return 'finished';
+            }
+
+            function formatStatus(statut) {
+                const lower = (statut || '').toLowerCase();
+                if (lower === 'finished') return 'Terminée';
+                if (lower === 'cancelled') return 'Annulée';
+                if (lower === 'started') return 'En cours';
+                return statut || '—';
+            }
+
+            function renderHistoriqueEleve(soutiens) {
+                const tbody = document.getElementById('profile-history-body');
+                if (!tbody) {
+                    return;
+                }
+                tbody.innerHTML = '';
+
+                if (!Array.isArray(soutiens) || soutiens.length === 0) {
+                    const emptyRow = document.createElement('tr');
+                    emptyRow.innerHTML = '<td colspan="5" style="color: #999;">Aucun soutien disponible.</td>';
+                    tbody.appendChild(emptyRow);
+                    return;
+                }
+
+                soutiens.forEach((soutien) => {
+                    const date = formatDate(soutien.dateDebut);
+                    const statusClass = getStatusClass(soutien.statut);
+                    const statusText = formatStatus(soutien.statut);
+                    const intervenantNom = `${soutien.prenomIntervenant || ''} ${soutien.nomIntervenant || ''}`.trim() || '—';
+
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${date}</td>
+                        <td style="font-weight: 500;">${soutien.matiere || '—'}</td>
+                        <td class="theme-column">${soutien.theme || '—'}</td>
+                        <td>${intervenantNom}</td>
+                        <td>
+                            <span class="status-badge ${statusClass}">${statusText}</span>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
             }
             
             function showSoutienSection(data) {

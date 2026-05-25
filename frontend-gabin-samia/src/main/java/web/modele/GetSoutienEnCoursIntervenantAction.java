@@ -5,6 +5,8 @@
 package web.modele;
 
 import jakarta.servlet.http.HttpServletRequest;
+import java.util.List;
+import metier.modele.Eleve;
 import metier.modele.Intervenant;
 import metier.modele.Soutien;
 import metier.service.ServiceCompte;
@@ -29,7 +31,15 @@ public class GetSoutienEnCoursIntervenantAction extends Action {
         }
         
         Soutien soutien = ServiceSoutien.getSoutienEnCoursIntervenant(intervenant);
-        
+
+        if (soutien != null) {
+            Eleve eleve = soutien.getEleve();
+            if (eleve != null) {
+                List<Soutien> soutiensEleve = ServiceSoutien.getSoutiensEleve(eleve);
+                request.setAttribute("soutiensEleve", soutiensEleve);
+            }
+        }
+
         request.setAttribute("soutien", soutien);
 
     }
