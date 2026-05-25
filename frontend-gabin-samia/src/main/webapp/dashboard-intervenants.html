@@ -65,7 +65,10 @@
                                 </div>
                                 <div class="intervenant-info">
                                     <h3 id="eleve-name">Lucas Martin</h3>
-                                    <p id="eleve-grade">4ème</p>
+                                    <div class="eleve-meta">
+                                        <span id="eleve-grade">4ème</span>
+                                        <button type="button" class="eleve-profile-link" id="eleve-profile-toggle" aria-controls="profil-section">Voir le profil</button>
+                                    </div>
                                 </div>
                             </div>
 
@@ -127,21 +130,119 @@
                          </div>
                     </div>
                 </div>
+
+                <!-- Profil Eleve -->
+                <div id="profil-section" style="display: none;">
+                    <div class="status-message show profile-view">
+                        <button type="button" class="profile-back" id="profile-back-button">
+                            <i data-lucide="chevron-left"></i>
+                            Retour au tableau de bord
+                        </button>
+
+                        <div class="profile-summary">
+                            <div class="profile-avatar">
+                                <i data-lucide="user"></i>
+                            </div>
+                            <div>
+                                <h2 id="profile-name">—</h2>
+                                <div class="profile-meta">
+                                    <span class="profile-pill" id="profile-niveau">—</span>
+                                    <span class="profile-subline" id="profile-email"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="profile-grid">
+                            <div class="profile-card">
+                                <div class="profile-label">Nom</div>
+                                <div class="profile-value" id="profile-nom">—</div>
+                            </div>
+                            <div class="profile-card">
+                                <div class="profile-label">Prénom</div>
+                                <div class="profile-value" id="profile-prenom">—</div>
+                            </div>
+                            <div class="profile-card">
+                                <div class="profile-label">Date de naissance</div>
+                                <div class="profile-value" id="profile-naissance">—</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </main>
         </div>
 
         <script>
+            let currentSoutien = null;
+
             function initPage() {
                 afficherSoutienEnCours();
                 document.getElementById("button-finir").addEventListener("click", finirSoutien);
+                const profileToggle = document.getElementById("eleve-profile-toggle");
+                if (profileToggle) {
+                    profileToggle.addEventListener("click", showEleveProfile);
+                }
+                const profileBack = document.getElementById("profile-back-button");
+                if (profileBack) {
+                    profileBack.addEventListener("click", retourTableauDeBord);
+                }
                 lucide.createIcons();
             };
+
+            function showEleveProfile() {
+                if (!currentSoutien || !currentSoutien.eleve) {
+                    return;
+                }
+                const eleve = currentSoutien.eleve || {};
+                const nomComplet = `${eleve.prenom || ''} ${eleve.nom || ''}`.trim();
+                document.getElementById("profile-name").textContent = nomComplet || "—";
+                document.getElementById("profile-nom").textContent = eleve.nom || "—";
+                document.getElementById("profile-prenom").textContent = eleve.prenom || "—";
+                document.getElementById("profile-naissance").textContent = formatDate(eleve.dateNaissance);
+                const emailLine = document.getElementById("profile-email");
+                if (emailLine) {
+                    if (eleve.email) {
+                        emailLine.textContent = eleve.email;
+                        emailLine.classList.remove("is-hidden");
+                    } else {
+                        emailLine.textContent = "";
+                        emailLine.classList.add("is-hidden");
+                    }
+                }
+                document.getElementById("profile-niveau").textContent = eleve.niveauScolaire ? `${eleve.niveauScolaire}ème` : "—";
+
+                document.getElementById("soutien-section").style.display = "none";
+                document.getElementById("disponible-section").style.display = "none";
+                document.getElementById("profil-section").style.display = "block";
+                lucide.createIcons();
+            }
+
+            function retourTableauDeBord() {
+                document.getElementById("profil-section").style.display = "none";
+                afficherSoutienEnCours();
+            }
+
+            function formatDate(dateString) {
+                if (!dateString) {
+                    return "—";
+                }
+                const date = new Date(dateString);
+                if (Number.isNaN(date.getTime())) {
+                    return dateString;
+                }
+                return date.toLocaleDateString("fr-FR");
+            }
             
             function showSoutienSection(data) {
+                currentSoutien = data;
                 document.getElementById("soutien-section").style.display = "block";
                 document.getElementById("disponible-section").style.display = "none";
+                document.getElementById("profil-section").style.display = "none";
                 
                 document.getElementById("eleve-name").textContent = data.prenomEleve + " " + data.nomEleve;
+                const eleve = data.eleve || {};
+                if (eleve.niveauScolaire !== undefined && eleve.niveauScolaire !== null && eleve.niveauScolaire !== "") {
+                    document.getElementById("eleve-grade").textContent = `${eleve.niveauScolaire}ème`;
+                }
                 document.getElementById("detail-matiere").textContent = data.matiere;
                 document.getElementById("detail-theme").textContent = data.theme;
                 document.getElementById("detail-debut").textContent = data.debut;
@@ -155,8 +256,10 @@
             }
             
             function showDisponibleSection() {
+                currentSoutien = null;
                 document.getElementById("soutien-section").style.display = "none";
                 document.getElementById("disponible-section").style.display = "block";
+                document.getElementById("profil-section").style.display = "none";
                 chargerStats();
                 lucide.createIcons();
             }

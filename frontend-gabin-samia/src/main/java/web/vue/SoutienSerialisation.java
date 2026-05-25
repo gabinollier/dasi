@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.format.DateTimeFormatter;
 import metier.modele.Autre;
+import metier.modele.Eleve;
 import metier.modele.Etudiant;
 import metier.modele.Intervenant;
 import metier.modele.Professeur;
@@ -45,6 +46,22 @@ public class SoutienSerialisation extends Serialisation {
                 .add("description", soutien.getDescription())
                 .add("nomEleve", soutien.getEleve().getPrenom())
                 .add("prenomEleve", soutien.getEleve().getNom());
+
+            Eleve eleve = soutien.getEleve();
+            if (eleve != null) {
+                JsonObjectBuilder eleveBuilder = Json.createObjectBuilder()
+                        .add("id", eleve.getId())
+                        .add("nom", eleve.getNom())
+                        .add("prenom", eleve.getPrenom())
+                        .add("niveauScolaire", eleve.getNiveauScolaire())
+                        .add("email", eleve.getEmail());
+
+                if (eleve.getDateNaissance() != null) {
+                    eleveBuilder.add("dateNaissance", eleve.getDateNaissance().format(DateTimeFormatter.ISO_DATE));
+                }
+
+                objetBuilder.add("eleve", eleveBuilder);
+            }
             
             Intervenant intervenant = soutien.getIntervenant();
             if (intervenant instanceof Professeur)
